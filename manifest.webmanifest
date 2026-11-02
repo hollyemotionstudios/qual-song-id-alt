@@ -1,7 +1,7 @@
 {
   "id": "./",
-  "name": "Song ID",
-  "short_name": "Song ID",
+  "name": "Song ID Alt",
+  "short_name": "Song ID Alt",
   "start_url": "./",
   "scope": "./",
   "display": "fullscreen",
