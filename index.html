@@ -98,7 +98,7 @@ body:not(.show-status) .status { display: none; }
 .card { display: none; }
 .cover {
   position: relative; flex: 0 0 calc(280 * var(--u)); width: calc(280 * var(--u)); margin-top: calc(55 * var(--u));
-  border-radius: calc(3 * var(--u)); overflow: hidden;
+  border-radius: calc(3 * var(--u)); overflow: hidden; cursor: pointer;
 }
 .cover img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .card .label {
@@ -125,9 +125,21 @@ body:not(.show-status) .status { display: none; }
 .titles h1 { font-size: calc(44 * var(--u)); line-height: calc(52 * var(--u)); font-weight: 700; letter-spacing: .005em; white-space: nowrap; }
 .titles p { margin-top: calc(10 * var(--u)); font-size: calc(32 * var(--u)); line-height: calc(38 * var(--u)); font-weight: 700; color: #fff; }
 
+/* music player, from the Fold player (qual-fold-player): progress bar, times, transport.
+   Its red bar and button would vanish on this red background, so the bar and button are white. */
+.transport { flex: 0 0 auto; width: calc(431 * var(--u)); margin-top: auto; padding-top: calc(16 * var(--u)); }
+.prog { position: relative; }
+.bar { position: relative; height: calc(3 * var(--u)); border-radius: calc(2 * var(--u)); background: rgba(255, 255, 255, .35); }
+.bar i { position: absolute; left: 0; top: 0; height: 100%; width: 0; border-radius: inherit; background: #fff; }
+/* invisible strip over the bar: a finger-sized target for tapping a point in the song (nothing happens on hover or drag) */
+.seek { position: absolute; left: calc(-10 * var(--u)); right: calc(-10 * var(--u)); top: calc(-21 * var(--u)); height: calc(45 * var(--u)); }
+.times {
+  display: flex; justify-content: space-between; margin-top: calc(4 * var(--u));
+  font-size: calc(14 * var(--u)); line-height: calc(18 * var(--u)); font-weight: 600; font-variant-numeric: tabular-nums;
+}
 .controls {
-  flex: 0 0 auto; margin-top: auto; padding-top: calc(28 * var(--u));
-  display: flex; align-items: center; gap: calc(41 * var(--u));
+  display: flex; justify-content: center; align-items: center; gap: calc(41 * var(--u));
+  margin-top: calc(10 * var(--u));
 }
 .controls .ic svg { width: calc(26 * var(--u)); height: calc(26 * var(--u)); }
 .play {
@@ -140,40 +152,20 @@ body:not(.show-status) .status { display: none; }
 .play .i-play { margin-left: calc(5 * var(--u)); }
 .play .i-pause, .play.playing .i-play { display: none; }
 .play.playing .i-pause { display: block; }
-/* the transport (shuffle, previous, play/pause, next, repeat) is hidden; "Open song" takes its place */
-.controls > :not(.open) { display: none; }
-.open {
-  display: flex; align-items: center; gap: calc(9 * var(--u));
-  height: calc(54 * var(--u)); padding: 0 calc(26 * var(--u)) 0 calc(30 * var(--u)); border-radius: calc(27 * var(--u));
-  background: #fff; color: var(--red);
-  font-size: calc(19 * var(--u)); font-weight: 600; letter-spacing: .01em;
-  box-shadow: 0 0 calc(47 * var(--u)) rgba(90, 0, 8, .35);
-}
-.open::after {   /* ring that bursts outward on tap */
-  content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
-  box-shadow: 0 0 0 0 rgba(255, 255, 255, .7); opacity: 0;
-}
-.open { position: relative; }
-.open.pressed { transform: scale(.86) !important; background: #ffd9dc; transition: transform .08s ease, background-color .08s ease; }
-.open.tapped { animation: open-pop .5s cubic-bezier(.3, 1.6, .5, 1); }
-.open.tapped::after { animation: open-ring .55s ease-out; }
-@keyframes open-pop { 0% { transform: scale(.86); background: #ffd9dc; } 45% { transform: scale(1.12); background: #fff; } 100% { transform: scale(1); } }
-@keyframes open-ring {
-  0% { opacity: 1; box-shadow: 0 0 0 0 rgba(255, 255, 255, .75); }
-  100% { opacity: 1; box-shadow: 0 0 0 calc(26 * var(--u)) rgba(255, 255, 255, 0); }
-}
-.open svg { width: calc(19 * var(--u)); height: calc(19 * var(--u)); }
 
+/* bottom nav, copied from the Fold player (qual-fold-player) with a red background and white outline. Its grey and red icons
+   would vanish on red, so they are soft white, and white for the active one. Icon sizes and spots are its Figma px. */
 .nav {
-  flex: 0 0 calc(89 * var(--u)); width: calc(475 * var(--u)); margin-top: calc(41 * var(--u));
-  background: var(--nav); border: 1px solid rgba(255, 255, 255, .13); border-bottom: 0;
+  position: relative; flex: 0 0 calc(87 * var(--u)); width: calc(477 * var(--u)); margin-top: calc(28 * var(--u));
+  background: var(--red); border: calc(1 * var(--u)) solid #fff; border-bottom: 0;
   border-radius: calc(40 * var(--u)) calc(40 * var(--u)) 0 0;
-  display: flex; justify-content: space-around; align-items: flex-start;
-  padding: calc(30 * var(--u)) calc(14 * var(--u)) 0;
+  box-shadow: 0 calc(-5 * var(--u)) calc(20 * var(--u)) rgba(168, 186, 207, .1);
 }
-.nav svg { width: calc(30 * var(--u)); height: calc(30 * var(--u)); }
-.nav .on { color: var(--accent); }
-.nav button { color: var(--mute); }
+.nav button { position: absolute; top: calc(28 * var(--u)); width: calc(28.59 * var(--u)); height: calc(32 * var(--u)); color: var(--soft); }
+.nav svg { width: 100%; height: 100%; overflow: visible; }
+.nav .on { top: calc(29.67 * var(--u)); width: calc(30.14 * var(--u)); height: calc(30.14 * var(--u)); color: #fff; }
+/* finger-sized target around the home icon */
+#home::after { content: ""; position: absolute; inset: calc(-19 * var(--u)) calc(-20.7 * var(--u)); }
 
 /* idle / listening message on the empty player half */
 .hint {
@@ -184,7 +176,7 @@ body:not(.show-status) .status { display: none; }
 .hint span { transition: opacity .3s; }
 .found .hint, .listening .hint, .no-hint .hint { opacity: 0; }   /* the hint fades away once listening starts */
 
-/* ---------- reveal choreography: header + nav → title → album cover → subtitle → Open song ---------- */
+/* ---------- reveal choreography: header + nav → title → album cover → subtitle → music player ---------- */
 .reveal { opacity: 0; transform: translateY(calc(18 * var(--u))); transition: opacity .35s ease, transform .35s ease; }
 .play.reveal { transform: scale(.35); }
 .found .reveal {
@@ -195,6 +187,7 @@ body:not(.show-status) .status { display: none; }
 </style>
 </head>
 <body>
+<audio id="audio" src="song.mp3" preload="auto"></audio>
 <div class="app" id="app">
 
   <div class="status">
@@ -238,23 +231,29 @@ body:not(.show-status) .status { display: none; }
         <p class="reveal" id="subtitle" style="--d:1s"></p>
       </div>
 
-      <div class="controls">
-        <button class="ic reveal" style="--d:1.15s" aria-label="Shuffle"><svg viewBox="0 0 24 24" fill="none" stroke="#f2f2f2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/><line x1="4" y1="4" x2="9" y2="9"/></svg></button>
-        <button class="ic reveal" style="--d:1.2s" aria-label="Previous"><svg viewBox="0 0 24 24" fill="none" stroke="#f2f2f2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="19 20 9 12 19 4 19 20"/><line x1="5" y1="19" x2="5" y2="5"/></svg></button>
-        <button class="play reveal" id="play" style="--d:.55s" aria-label="Play">
-          <svg class="i-play" viewBox="0 0 26.9 32.94"><path fill="#e71324" d="M5.43 32.45 25.09 19.6c2.42-1.39 2.42-4.88 0-6.27L5.43.49C3.02-.9 0 .84 0 3.63v25.68c0 2.79 3.02 4.53 5.43 3.14Z"/></svg>
-          <svg class="i-pause" viewBox="0 0 26 32"><rect x="2" y="1" width="8" height="30" rx="2.5" fill="#e71324"/><rect x="16" y="1" width="8" height="30" rx="2.5" fill="#e71324"/></svg>
-        </button>
-        <button class="ic reveal" style="--d:1.2s" aria-label="Next"><svg viewBox="0 0 24 24" fill="none" stroke="#f2f2f2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 4 15 12 5 20 5 4"/><line x1="19" y1="5" x2="19" y2="19"/></svg></button>
-        <button class="open reveal" id="open" style="--d:1.2s">Open song<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></button>
-        <button class="ic reveal" style="--d:1.25s" aria-label="Repeat"><svg viewBox="0 0 24 24" fill="none" stroke="#f2f2f2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg></button>
+      <div class="transport">
+        <div class="prog reveal" style="--d:1.2s">
+          <div class="bar" id="bar"><i id="played"></i></div>
+          <div class="times"><span id="now">0:00</span><span id="end">1:34</span></div>
+          <div class="seek" id="seek" aria-label="Seek"></div>
+        </div>
+        <div class="controls">
+          <button class="ic reveal" style="--d:1.3s" aria-label="Shuffle"><svg viewBox="0 0 24 24" fill="none" stroke="#f2f2f2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/><line x1="4" y1="4" x2="9" y2="9"/></svg></button>
+          <button class="ic reveal" style="--d:1.3s" aria-label="Previous"><svg viewBox="0 0 24 24" fill="none" stroke="#f2f2f2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="19 20 9 12 19 4 19 20"/><line x1="5" y1="19" x2="5" y2="5"/></svg></button>
+          <button class="play reveal" id="play" style="--d:1.2s" aria-label="Play">
+            <svg class="i-play" viewBox="0 0 26.9 32.94"><path fill="#e71324" d="M5.43 32.45 25.09 19.6c2.42-1.39 2.42-4.88 0-6.27L5.43.49C3.02-.9 0 .84 0 3.63v25.68c0 2.79 3.02 4.53 5.43 3.14Z"/></svg>
+            <svg class="i-pause" viewBox="0 0 26 32"><rect x="2" y="1" width="8" height="30" rx="2.5" fill="#e71324"/><rect x="16" y="1" width="8" height="30" rx="2.5" fill="#e71324"/></svg>
+          </button>
+          <button class="ic reveal" style="--d:1.3s" aria-label="Next"><svg viewBox="0 0 24 24" fill="none" stroke="#f2f2f2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 4 15 12 5 20 5 4"/><line x1="19" y1="5" x2="19" y2="19"/></svg></button>
+          <button class="ic reveal" style="--d:1.3s" aria-label="Repeat"><svg viewBox="0 0 24 24" fill="none" stroke="#f2f2f2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg></button>
+        </div>
       </div>
 
       <nav class="nav reveal" style="--d:.1s">
-        <button id="home" aria-label="Home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></button>
-        <button class="on" aria-label="Music"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></button>
-        <button aria-label="Favorites"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
-        <button aria-label="Nearby"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></button>
+        <button id="home" aria-label="Home" style="left:calc(44 * var(--u))"><svg preserveAspectRatio="none" viewBox="0 0 28.5867 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3.57333 12L14.2933 2.66667L25.0133 12V26.6667C25.0133 27.3739 24.7623 28.0522 24.3156 28.5523C23.8688 29.0524 23.2629 29.3333 22.6311 29.3333H5.95556C5.32375 29.3333 4.71782 29.0524 4.27107 28.5523C3.82432 28.0522 3.57333 27.3739 3.57333 26.6667V12Z"/><path d="M10.72 29.3333V16H17.8667V29.3333"/></svg></button>
+        <button class="on" aria-label="Music" style="left:calc(155.93 * var(--u))"><svg preserveAspectRatio="none" viewBox="0 0 30.0001 30" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.3334 24.3333V4.11112L29.0001 1.00001V21.2222"/><path d="M10.3333 24.3333C10.3333 26.9106 8.244 29 5.66667 29C3.08934 29 1 26.9106 1 24.3333C1 21.756 3.08934 19.6666 5.66667 19.6666C8.244 19.6666 10.3333 21.756 10.3333 24.3333Z"/><path d="M28.9998 21.2222C28.9998 23.7996 26.9105 25.8889 24.3331 25.8889C21.7558 25.8889 19.6665 23.7996 19.6665 21.2222C19.6665 18.6449 21.7558 16.5556 24.3331 16.5556C26.9105 16.5556 28.9998 18.6449 28.9998 21.2222Z"/></svg></button>
+        <button aria-label="Favorites" style="left:calc(289 * var(--u))"><svg preserveAspectRatio="none" viewBox="0 0 28.5867 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M24.8228 6.14667C24.2144 5.46534 23.4921 4.92486 22.697 4.55611C21.902 4.18736 21.0499 3.99757 20.1893 3.99757C19.3288 3.99757 18.4766 4.18736 17.6816 4.55611C16.8866 4.92486 16.1643 5.46534 15.5559 6.14667L14.2933 7.56L13.0308 6.14667C11.8019 4.77108 10.1352 3.99828 8.39733 3.99828C6.65946 3.99828 4.99277 4.77108 3.76391 6.14667C2.53505 7.52226 1.84468 9.38796 1.84468 11.3333C1.84468 13.2787 2.53505 15.1444 3.76391 16.52L5.02649 17.9333L14.2933 28.3067L23.5602 17.9333L24.8228 16.52C25.4314 15.839 25.9142 15.0304 26.2436 14.1405C26.5731 13.2505 26.7426 12.2966 26.7426 11.3333C26.7426 10.37 26.5731 9.41614 26.2436 8.52619C25.9142 7.63625 25.4314 6.82767 24.8228 6.14667V6.14667Z"/></svg></button>
+        <button aria-label="Nearby" style="left:calc(413 * var(--u))"><svg preserveAspectRatio="none" viewBox="0 0 28.5867 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M25.0133 13.3333C25.0133 22.6667 14.2933 30.6667 14.2933 30.6667C14.2933 30.6667 3.57333 22.6667 3.57333 13.3333C3.57333 10.1507 4.70276 7.09849 6.71315 4.84805C8.72354 2.59762 11.4502 1.33333 14.2933 1.33333C17.1365 1.33333 19.8631 2.59762 21.8735 4.84805C23.8839 7.09849 25.0133 10.1507 25.0133 13.3333Z"/><path d="M17.8667 13.3333C17.8667 15.5425 16.2668 17.3333 14.2933 17.3333C12.3198 17.3333 10.72 15.5425 10.72 13.3333C10.72 11.1242 12.3198 9.33333 14.2933 9.33333C16.2668 9.33333 17.8667 11.1242 17.8667 13.3333Z"/></svg></button>
       </nav>
     </div>
   </section>
@@ -315,7 +314,7 @@ body:not(.show-status) .status { display: none; }
     const vw = innerWidth, vh = innerHeight;
     const stacked = vw < vh * 0.9;
     app.classList.toggle("stacked", stacked);
-    U = stacked ? Math.min(vw / 523, (vh * 0.6) / 790) : Math.min(vw / 2 / 523, vh / 849);
+    U = stacked ? Math.min(vw / 523, (vh * 0.6) / 800) : Math.min(vw / 2 / 523, vh / 849);
     document.documentElement.style.setProperty("--u", U + "px");
     // rings are centred on the listen half but drawn across the whole screen
     const r = listenEl.getBoundingClientRect();
@@ -362,6 +361,9 @@ body:not(.show-status) .status { display: none; }
     playing = on;
     playBtn.classList.toggle("playing", on);
     playBtn.setAttribute("aria-label", on ? "Pause" : "Play");
+    clearInterval(songTimer);
+    if (hasAudio) { on ? audio.play().catch(() => {}) : audio.pause(); }
+    if (on) { songStart = songPos; startedAt = Date.now(); songTimer = setInterval(songTick, 100); }
     if (on) scheduleLyric(lyricLeft || LYRICS[pos % N][1] * 1000);
     else { lyricLeft = Math.max(0, lyricDue - performance.now()); clearTimeout(lyricTimer); }
   }
@@ -370,6 +372,50 @@ body:not(.show-status) .status { display: none; }
     playBtn.classList.remove("playing");
     placeLyric(false);
   }
+
+  // ---------- music player, as in the Fold player: play/pause, tap the bar to skip, tap the cover for 0:00 ----------
+  // Uses song.mp3 if it sits next to this file; otherwise a silent timer drives the UI.
+  const audio = $("#audio"), bar = $("#bar"), seek = $("#seek"), playedEl = $("#played"), nowEl = $("#now"), endEl = $("#end");
+  let songLength = 94, songPos = Math.max(0, +q.get("t") || 0);   // 1:34; ?t=40 starts at 0:40
+  let hasAudio = false, songStart = 0, startedAt = 0, songTimer = 0;
+
+  const fmt = s => Math.floor(s / 60) + ":" + String(Math.floor(s % 60)).padStart(2, "0");
+  function renderSong() {
+    playedEl.style.width = (songPos / songLength * 100) + "%";
+    nowEl.textContent = fmt(songPos);
+    endEl.textContent = fmt(songLength);
+  }
+  // back to paused at 0:00, staying on the song found page
+  function resetSong() {
+    setPlaying(false);
+    songPos = 0;
+    if (hasAudio) audio.currentTime = 0;
+    renderSong();
+    resetLyrics();
+  }
+  // position comes from the wall clock (or the audio), so a throttled timer never drifts
+  function songTick() {
+    songPos = hasAudio ? audio.currentTime : songStart + (Date.now() - startedAt) / 1000;
+    if (songPos >= songLength) resetSong(); else renderSong();
+  }
+  // playing or paused stays as it was
+  function seekTo(clientX) {
+    const r = bar.getBoundingClientRect();
+    songPos = Math.min(1, Math.max(0, (clientX - r.left) / r.width)) * songLength;
+    if (songPos >= songLength) songPos = songLength - 0.5;
+    if (hasAudio) audio.currentTime = songPos;
+    songStart = songPos; startedAt = Date.now();
+    renderSong();
+  }
+  audio.addEventListener("loadedmetadata", () => {
+    hasAudio = true;
+    songLength = audio.duration;
+    audio.currentTime = Math.min(songPos, songLength);
+    renderSong();
+  });
+  audio.addEventListener("ended", resetSong);
+  seek.addEventListener("click", e => { if (state === "found") seekTo(e.clientX); });
+  $("#cover").addEventListener("click", () => { if (state === "found") resetSong(); });
 
   // ---------- flow: idle → listening → found ----------
   let state = "idle", tStart = 0, timers = [];
@@ -384,10 +430,11 @@ body:not(.show-status) .status { display: none; }
   function found() {
     state = "found";
     app.classList.add("found");
-    // header + nav → title → album cover → subtitle → Open song
+    // header + nav → title → album cover → subtitle → music player
   }
   function reset() {
     timers.forEach(clearTimeout); timers = [];
+    resetSong();
     state = "idle";
     app.classList.remove("found", "listening");
     setTimeout(resetLyrics, 350);
@@ -397,18 +444,6 @@ body:not(.show-status) .status { display: none; }
   logo.addEventListener("click", e => { if (state !== "idle") { e.stopPropagation(); reset(); } });
   $("#home").addEventListener("click", () => { if (state !== "idle") reset(); });
   playBtn.addEventListener("click", () => { if (state === "found") setPlaying(!playing); });
-  // "Open song" squashes while held, pops with a burst ring when tapped, then resets the prototype
-  const openBtn = $("#open");
-  const unpress = () => openBtn.classList.remove("pressed");
-  openBtn.addEventListener("pointerdown", () => { if (state === "found") openBtn.classList.add("pressed"); });
-  ["pointerup", "pointercancel", "pointerleave"].forEach(ev => openBtn.addEventListener(ev, unpress));
-  openBtn.addEventListener("click", () => {
-    if (state !== "found" || openBtn.classList.contains("tapped")) return;
-    unpress();
-    openBtn.classList.add("tapped");
-    later(reset, 550);
-  });
-  openBtn.addEventListener("animationend", e => { if (e.animationName === "open-pop") openBtn.classList.remove("tapped"); });
   $("#fav").addEventListener("click", e => e.currentTarget.classList.toggle("on"));
   addEventListener("keydown", e => {
     const k = e.key.toLowerCase();
@@ -492,6 +527,7 @@ body:not(.show-status) .status { display: none; }
   addEventListener("resize", fit);
   document.fonts?.ready.then(() => placeLyric(false));
   fit();
+  renderSong();
   requestAnimationFrame(frame);
 })();
 </script>
