@@ -296,7 +296,7 @@ body:not(.show-status) .status { display: none; }
   ];
 
   const q = new URLSearchParams(location.search);
-  const LISTEN_SECONDS = Math.max(1, +q.get("listen") || 3.9);   // 6 heartbeats; ?listen=6
+  const LISTEN_SECONDS = Math.max(1, +q.get("listen") || 2.5);   // 4 heartbeats; ?listen=6
   if (q.get("status") === "1") document.body.classList.add("show-status");
   if (q.get("hint") === "0") document.body.classList.add("no-hint");
 
