@@ -443,6 +443,7 @@ body:not(.show-status) .status { display: none; }
   listenEl.addEventListener("click", () => { if (state === "idle") listen(); });
   logo.addEventListener("click", e => { if (state !== "idle") { e.stopPropagation(); reset(); } });
   $("#home").addEventListener("click", () => { if (state !== "idle") reset(); });
+  $(".hdr .back").addEventListener("click", () => { if (state !== "idle") reset(); });
   playBtn.addEventListener("click", () => { if (state === "found") setPlaying(!playing); });
   $("#fav").addEventListener("click", e => e.currentTarget.classList.toggle("on"));
   addEventListener("keydown", e => {
